@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Hub | Professional Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <div class="bg-glow secondary"></div>
+
+    <!-- Welcome Slide -->
+    <section id="welcome-slide" class="welcome-container">
+        <div class="welcome-content fade-in">
+            <h1>Welcome to <span class="accent-text">Media Hub</span></h1>
+            <p class="description">Your professional gateway to all your favorite media platforms in one place.</p>
+            
+            <div class="about-section">
+                <h2>About This Project</h2>
+                <div class="about-grid">
+                    <div class="about-item">
+                        <i class="fas fa-bullseye"></i>
+                        <h3>Why?</h3>
+                        <p>Created to simplify your digital life by aggregating multiple media services into a single, clean dashboard.</p>
+                    </div>
+                    <div class="about-item">
+                        <i class="fas fa-user-gear"></i>
+                        <h3>How?</h3>
+                        <p>Simply click "Get Started" to enter your personalized dashboard and access all platforms instantly.</p>
+                    </div>
+                    <div class="about-item">
+                        <i class="fas fa-star"></i>
+                        <h3>Benefits</h3>
+                        <p>No more switching tabs. Enjoy a unified, dark-themed experience optimized for focus and speed.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-get-started" onclick="enterDashboard()">
+                Get Started <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Dashboard (Hidden initially) -->
+    <div id="dashboard-wrapper" style="display: none;">
+        <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+        <!-- Navbar -->
+        <nav class="navbar" id="main-nav">
+            <div class="nav-left">
+                <i class="fas fa-bars mobile-menu-toggle" id="mobile-menu-toggle" onclick="toggleSidebar()"></i>
+                <div class="logo" onclick="showPage('home')">Media <span>Hub</span></div>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search and press enter...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="nav-right">
+                <button class="profile-btn" onclick="openLogin()">Sign In</button>
+            </div>
+        </nav>
+
+        <div class="app-container">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="side-item active" onclick="showPage('home')" id="side-home">
+                    <i class="fas fa-home icon"></i>
+                    <span>Home</span>
+                </div>
+                <div class="side-item" onclick="showPage('trending')" id="side-trending">
+                    <i class="fas fa-fire icon"></i>
+                    <span>Trending</span>
+                </div>
+                <div class="side-item" onclick="showPage('music')" id="side-music">
+                    <i class="fas fa-music icon"></i>
+                    <span>Music</span>
+                </div>
+                <div class="side-item" onclick="showPage('videos')" id="side-videos">
+                <i class="fas fa-video icon"></i>
+                <span>Videos</span>
+            </div>
+            <div class="side-item" onclick="showPage('apps')" id="side-apps">
+                <i class="fas fa-th icon"></i>
+                <span>Apps</span>
+            </div>
+                <div class="side-item" onclick="showPage('settings')" id="side-settings">
+                    <i class="fas fa-cog icon"></i>
+                    <span>Settings</span>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Home Page -->
+                <section id="page-home" class="content-page active">
+                    <div class="page-top-nav">
+                        <button class="btn-back-universal" onclick="goBack()" style="visibility: hidden;">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                    </div>
+                    <div class="media-grid" id="home-grid">
+                        <!-- Cards will be injected here -->
+                    </div>
+                </section>
+
+                <!-- Trending Page -->
+                <section id="page-trending" class="content-page">
+                    <div class="page-top-nav">
+                        <button class="btn-back-universal" onclick="goBack()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h2>Trending Now</h2>
+                    </div>
+                    <div class="media-grid" id="trending-grid">
+                        <!-- Cards will be injected here -->
+                    </div>
+                </section>
+
+                <!-- Music Page -->
+                <section id="page-music" class="content-page">
+                    <div class="page-top-nav">
+                        <button class="btn-back-universal" onclick="goBack()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h2>Top Music</h2>
+                    </div>
+                    <div class="media-grid" id="music-grid">
+                        <!-- Cards will be injected here -->
+                    </div>
+                </section>
+
+                <!-- Videos Page -->
+                <section id="page-videos" class="content-page">
+                    <div class="page-top-nav">
+                        <button class="btn-back-universal" onclick="goBack()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="page-header">
+                            <h2>Featured Videos</h2>
+                            <div class="category-filters">
+                                <button class="filter-btn active" onclick="filterVideos('all')">All</button>
+                                <button class="filter-btn" onclick="filterVideos('movies')">Movies</button>
+                                <button class="filter-btn" onclick="filterVideos('tech')">Tech</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="media-grid" id="videos-grid">
+                        <!-- Video cards will be injected here -->
+                    </div>
+                </section>
+
+                <!-- Apps Page (Mini Play Store) -->
+                <section id="page-apps" class="content-page">
+                    <div class="page-top-nav">
+                        <button class="btn-back-universal" onclick="goBack()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="page-header store-header">
+                            <div class="header-main">
+                                <h2>Mini Play Store</h2>
+                                <div class="main-type-filters">
+                                    <button class="type-btn active" onclick="filterByType('app')">Apps</button>
+                                    <button class="type-btn" onclick="filterByType('game')">Games</button>
+                                </div>
+                            </div>
+                            <div class="apps-controls">
+                                <div class="category-filters" id="app-category-filters">
+                                    <button class="filter-btn active" onclick="filterAppsByCategory('all')">All</button>
+                                    <!-- Categories will be dynamically updated based on App/Game selection -->
+                                </div>
+                                <div class="apps-search">
+                                    <input type="text" id="apps-search-input" placeholder="Search apps & games..." oninput="searchApps()">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div id="store-content-wrapper" class="content-page">
+                    <div class="store-scroller">
+                        <div class="store-section" id="section-trending">
+                            <h3>🔥 Popular Apps</h3>
+                            <div class="apps-grid" id="trending-apps-grid"></div>
+                        </div>
+
+                        <div class="store-section" id="section-top-games">
+                            <h3>🎮 Top Games</h3>
+                            <div class="apps-grid" id="top-games-grid"></div>
+                        </div>
+
+                        <div class="store-section" id="section-recommended">
+                            <h3>✨ Recommended for You</h3>
+                            <div class="apps-grid" id="recommended-apps-grid"></div>
+                        </div>
+
+                        <div class="store-section" id="section-all">
+                            <h3>🛰️ All Items</h3>
+                            <div class="apps-grid" id="apps-grid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Immersive App Launcher -->
+                <section id="page-app-viewer" class="content-page immersive-container">
+                    <div class="launcher-splash" id="launcher-splash">
+                        <div class="splash-content">
+                            <div class="splash-icon" id="splash-app-icon">🚀</div>
+                            <h2 id="splash-app-name">Launching...</h2>
+                            <div class="splash-loader"></div>
+                            <p>Optimizing for your experience</p>
+                        </div>
+                    </div>
+
+                    <div class="immersive-header">
+                        <button class="btn-icon-round" onclick="showPage('app-detail')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <span id="immersive-app-title">App Name</span>
+                        <a id="external-launch-link" href="#" target="_blank" class="btn-icon-round">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="immersive-viewport">
+                        <div id="iframe-blocked-message" class="blocked-message" style="display: none;">
+                            <i class="fas fa-lock"></i>
+                            <h3>Embedded Content Restricted</h3>
+                            <p>This app requires a secure direct connection.</p>
+                            <button class="btn-install" id="btn-force-open">Open App Now</button>
+                        </div>
+                        <iframe id="app-frame" src="" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </section>
+
+                <!-- App Detail Page -->
+                <section id="page-app-detail" class="content-page">
+                    <div class="detail-header">
+                        <button class="btn-back-circle" onclick="showPage('apps')">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <div class="app-main-info">
+                            <div class="detail-icon" id="detail-icon-container">
+                                <img id="detail-app-icon" src="" alt="">
+                            </div>
+                            <div class="detail-text">
+                                <h1 id="detail-app-name">App Name</h1>
+                                <p id="detail-app-dev" class="dev-name">Developer Name</p>
+                                <p id="detail-app-cat" class="cat-name">Category</p>
+                                <div class="rating-badge">
+                                    <span id="detail-app-rating">4.5</span>
+                                    <div class="stars" id="detail-stars"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="install-container">
+                            <button class="btn-install" id="btn-install" onclick="startInstallation()">Install</button>
+                            <div class="install-progress-wrapper" id="install-progress-wrapper" style="display: none;">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="install-progress-fill"></div>
+                                </div>
+                                <span id="install-percent">0%</span>
+                            </div>
+                            <button class="btn-primary" id="btn-open-app" style="display: none;" onclick="openSelectedApp()">Open</button>
+                        </div>
+                    </div>
+
+                    <div class="detail-content">
+                        <div class="screenshot-section">
+                            <h3>Screenshots</h3>
+                            <div class="screenshot-scroller" id="detail-screenshots">
+                                <!-- Screenshots injected here -->
+                            </div>
+                        </div>
+
+                        <div class="about-section-detail">
+                            <h3>About this app</h3>
+                            <p id="detail-app-desc">Description goes here...</p>
+                        </div>
+
+                        <div class="features-section">
+                            <h3>Features</h3>
+                            <ul id="detail-app-features"></ul>
+                        </div>
+
+                        <div class="reviews-section">
+                            <h3>Ratings and reviews</h3>
+                            <div class="reviews-container" id="detail-app-reviews"></div>
+                        </div>
+
+                        <div class="related-section">
+                            <h3>Related Apps</h3>
+                            <div class="apps-grid" id="related-apps-grid"></div>
+                        </div>
+                    </div>
+                </section>
+
+        <!-- Login Modal (Slide Transition) -->
+        <div class="modal-overlay" id="login-modal">
+            <div class="login-card">
+                <h2>Sign In</h2>
+                <p style="color: #aaa; margin-bottom: 20px;">Welcome back to Media Hub</p>
+                <div id="login-error" style="color: var(--accent); margin-bottom: 10px; font-size: 0.9rem; display: none;"></div>
+                <input type="email" id="login-email" placeholder="Email" value="user@example.com">
+                <input type="password" id="login-password" placeholder="Password" value="password123">
+                <button class="btn-primary" onclick="handleLogin()">Sign In</button>
+                <div style="margin: 20px 0; color: #555;">OR</div>
+                <button class="btn-google" onclick="closeLogin()">
+                    <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" alt="Google">
+                    Sign in with Google
+                </button>
+                <p style="margin-top: 24px; font-size: 0.9rem; color: #aaa;">
+                    Use user@example.com / password123 to test.
+                </p>
+            </div>
+        </div>
+
+        <!-- Minimalist Watch Modal (Immersive) -->
+        <div class="modal-overlay video-modal-overlay" id="watch-modal">
+            <div class="focus-dimmer" id="focus-dimmer" onclick="toggleFocusMode()"></div>
+            <div class="watch-container">
+                <div class="watch-header">
+                    <div class="watch-info">
+                        <h2 id="video-modal-title">Video Title</h2>
+                        <p id="video-modal-desc">Video Description</p>
+                    </div>
+                    <div class="watch-actions">
+                        <button class="btn-focus" id="btn-focus-mode" onclick="toggleFocusMode()">
+                            <i class="fas fa-expand-arrows-alt"></i> <span>Focus Mode</span>
+                        </button>
+                        <button class="btn-close-video" onclick="closeWatch()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="video-wrapper">
+                    <div id="video-loader" class="video-loader">
+                        <div class="loader-spinner"></div>
+                        <span>Getting your video ready...</span>
+                    </div>
+                    <div id="youtube-player"></div>
+                    <button id="btn-skip-intro" class="skip-intro-btn" onclick="skipIntro()">
+                        Skip Intro <i class="fas fa-fast-forward"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End Dashboard            </main>
+
+            <!-- Info Sidebar (Right Side) -->
+            <aside class="info-sidebar">
+                <div class="info-section profile-mini">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Guest User</h3>
+                        <p>Standard Member</p>
+                    </div>
+                </div>
+
+                <div class="info-section stats-card">
+                    <div class="stat-item">
+                        <span class="stat-value">25</span>
+                        <span class="stat-label">Apps</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">12</span>
+                        <span class="stat-label">Games</span>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h4>✨ Recently Played</h4>
+                    <div class="recent-list" id="recent-activity-list">
+                        <div class="recent-item">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/b/b5/Subway_Surfers_App_Icon.png" alt="">
+                            <div class="item-detail">
+                                <h5>Subway Surfers</h5>
+                                <p>Played 2m ago</p>
+                            </div>
+                        </div>
+                        <div class="recent-item">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="">
+                            <div class="item-detail">
+                                <h5>Instagram</h5>
+                                <p>Used 15m ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section promo-banner">
+                    <h4>Go Premium</h4>
+                    <p>Unlock 4K streaming and ad-free experience.</p>
+                    <button class="btn-upgrade">Upgrade Now</button>
+                </div>
+            </aside>
+        </div> <!-- End App Container -->
+    </div> <!-- End Dashboard Wrapper -->
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
