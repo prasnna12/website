@@ -1,4 +1,4 @@
-[
+const APP_DATA = [
     { 
         "id": 1, 
         "name": "YouTube", 
@@ -273,4 +273,8 @@
         "desc": "Explore infinite worlds and build everything.", 
         "url": "https://www.minecraft.net/"
     }
-]
+];
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = APP_DATA;
+}

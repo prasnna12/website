@@ -1,10 +1,6 @@
-/* Professional Media Hub - Dashboard Logic */
+/* Professional Media Hub - Dashboard Logic (Static Version) */
 
-const API_BASE = window.location.origin === 'null' || window.location.protocol === 'file:' 
-    ? "http://localhost:5000/api" 
-    : "/api";
-
-let currentApps = [];
+let currentApps = typeof APP_DATA !== 'undefined' ? APP_DATA : [];
 let navHistory = ['home'];
 
 window.onload = () => {
@@ -17,20 +13,9 @@ window.onload = () => {
     }
     initGrids();
     setupSearch();
-    checkBackend(); // Verify backend connectivity
-    fetchApps(); // Initial apps fetch
+    renderApps(currentApps); // Initial apps render
 };
 
-async function checkBackend() {
-    try {
-        const res = await fetch(`${API_BASE}/health`);
-        const data = await res.json();
-        console.log("Backend Status:", data.status);
-    } catch (err) {
-        console.warn("Backend not reachable. Some features may not work.");
-        // Optional: show a small toast or banner
-    }
-}
 
 function getLocalMedia() {
     // Basic local data for non-app grids
@@ -197,19 +182,14 @@ function enterDashboard() {
 
 let currentType = 'app'; // 'app' or 'game'
 
-async function fetchApps(category = 'all') {
-    try {
-        const response = await fetch(`${API_BASE}/apps?category=${category}`);
-        currentApps = await response.json();
-        updateCategoryFilters();
-        renderApps(currentApps);
-    } catch (err) {
-        console.error("Failed to fetch apps:", err);
-        const mainGrid = document.getElementById('apps-grid');
-        if (mainGrid) {
-            mainGrid.innerHTML = `<div class="error-msg">Failed to load apps. Is the server running?</div>`;
-        }
+function fetchApps(category = 'all') {
+    if (category === 'all') {
+        currentApps = APP_DATA;
+    } else {
+        currentApps = APP_DATA.filter(a => a.category === category);
     }
+    updateCategoryFilters();
+    renderApps(currentApps);
 }
 
 function filterByType(type) {
@@ -476,29 +456,18 @@ function openApp(name, url) {
 
 // --- AUTH LOGIC ---
 
-async function handleLogin() {
+function handleLogin() {
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
     const errorEl = document.getElementById('login-error');
 
-    try {
-        const response = await fetch(`${API_BASE}/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
-        const data = await response.json();
-        
-        if (data.success) {
-            closeLogin();
-            document.querySelector('.profile-btn').innerText = data.user.name.split(' ')[0];
-            enterDashboard();
-        } else {
-            errorEl.innerText = data.message;
-            errorEl.style.display = 'block';
-        }
-    } catch (err) {
-        errorEl.innerText = "Connection error. Is backend running?";
+    // Simple local check (mock credentials)
+    if (email === 'user@example.com' && password === 'password123') {
+        closeLogin();
+        document.querySelector('.profile-btn').innerText = "Media";
+        enterDashboard();
+    } else {
+        errorEl.innerText = "Invalid credentials";
         errorEl.style.display = 'block';
     }
 }
