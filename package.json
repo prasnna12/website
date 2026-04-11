@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Static version of Media Hub for Cloudflare Pages",
   "scripts": {
-    "build": "echo 'No build required'"
+    "build": "echo 'No build required'",
+    "start": "npx -y http-server . -p 3000"
   }
 }
