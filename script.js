@@ -101,21 +101,24 @@ function renderGrid(containerId, items) {
         card.innerHTML = `
             <div class="app-icon-wrapper">
                 ${tags}
-                <img src="${iconUrl}" alt="${app.name}" loading="lazy" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(app.name)}&background=random&color=fff&size=512';">
+                <img src="${iconUrl}" alt="${app.name}" loading="lazy" onerror="this.src='https://unavatar.io/${app.domain || 'google.com'}'; this.onerror=function(){this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(app.name)}&background=random&color=fff&size=512';};">
             </div>
             <div class="app-name">${app.name}</div>
             <div class="app-cat">${app.category.charAt(0).toUpperCase() + app.category.slice(1)}</div>
         `;
+
         container.appendChild(card);
     });
 }
 
 function getIconUrl(app) {
     if (app.domain) {
-        return `https://logo.clearbit.com/${app.domain}?size=512`;
+        // Principal: Google's ultra-reliable favicon service (256px)
+        return `https://www.google.com/s2/favicons?domain=${app.domain}&sz=256`;
     }
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(app.name)}&background=333&color=fff&size=512&rounded=true`;
 }
+
 
 // --- DETAIL VIEW ---
 function openAppDetail(id) {
